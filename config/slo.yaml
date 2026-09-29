@@ -2,12 +2,23 @@ service: day13-l3a-monitoring-llmops-lab
 primary_slo:
   name: fast_successful_requests
   window: 28d
+  description: 99.5% requests must return successfully within 3000 ms.
   sli:
     good_event: 'event == "response_sent" and latency_ms <= 3000'
     total_event: 'event == "request_received"'
   target_percent: 99.5
   error_budget_percent: 0.5
-  note: Học viên phải giải thích hoặc điều chỉnh ngưỡng bằng baseline của mình.
+  rationale: >-
+    The 3000 ms boundary is a user-facing response-time objective rather than
+    the baseline average. P95/P99 still expose degradation before the objective
+    is exhausted, while failed requests count as bad events because they have no
+    matching response_sent event.
+  error_budget:
+    formula: 'allowed_bad_events = total_request_received * 0.005'
+    example_total_requests: 10000
+    example_allowed_bad_events: 50
+    equivalent_time_over_28d_minutes: 201.6
+    note: The authoritative budget is request-based; time is only an intuition aid.
 guardrails:
   error_rate_pct_max: 2
   daily_cost_usd_max: 2.5

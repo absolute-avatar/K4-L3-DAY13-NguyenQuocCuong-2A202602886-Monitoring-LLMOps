@@ -1,0 +1,828 @@
+{
+  "challenge_id": "day13-k4-l3a-monitoring-llmops-v1",
+  "cohort": "K4",
+  "incident": "rag_slow",
+  "affected_feature": "monitoring",
+  "latency_threshold_ms": 2000,
+  "concurrency": 5,
+  "query_order": "app.challenge.ordered_queries (coach-provided seed; input unchanged)",
+  "phases": [
+    {
+      "name": "baseline",
+      "started_at": "2026-09-29T10:12:53.394828+00:00",
+      "ended_at": "2026-09-29T10:12:59.733620+00:00",
+      "command": "python scripts/load_test.py --challenge --concurrency 5",
+      "command_output": "Challenge: day13-k4-l3a-monitoring-llmops-v1 | Cohort: K4\n[200] req-97d0b3b1 | monitoring | 5593.3ms\n[200] req-41f4ce3c | monitoring | 5593.5ms\n[200] req-6874e11b | monitoring | 5595.6ms\n[200] req-fe2caad5 | monitoring | 5595.4ms\n[200] req-a5c8c6ee | monitoring | 5594.5ms\n",
+      "metrics": {
+        "request_count": 5,
+        "success_count": 5,
+        "error_count": 0,
+        "error_rate_pct": 0.0,
+        "latency_ms": {
+          "p50": 159.0,
+          "p95": 2451.0,
+          "p99": 2451.0,
+          "mean": 616.2
+        },
+        "client_latency_ms": {
+          "p50": 5594.5,
+          "p95": 5595.6,
+          "p99": 5595.6
+        },
+        "ttft_p95_ms": 50.0,
+        "over_challenge_threshold": 1,
+        "retrieval_success_rate_pct": 100.0,
+        "correlation_ids": [
+          "req-97d0b3b1",
+          "req-41f4ce3c",
+          "req-6874e11b",
+          "req-fe2caad5",
+          "req-a5c8c6ee"
+        ]
+      },
+      "dashboard_60m": {
+        "title": "K4-L3A Day 13 Monitoring & LLMOps",
+        "generated_at": "2026-09-29T10:12:59.829823+00:00",
+        "time_range_minutes": 60,
+        "refresh_seconds": 30,
+        "record_count": 33,
+        "latency": {
+          "p50_ms": 156.0,
+          "p95_ms": 3987.0,
+          "p99_ms": 3987.0,
+          "ttft_p95_ms": 51.0,
+          "threshold": {
+            "aggregation": "p95",
+            "operator": "lte",
+            "value": 3000
+          }
+        },
+        "traffic": {
+          "request_count": 15,
+          "rate_per_minute": 7.5,
+          "by_minute": [
+            {
+              "minute": "09:19",
+              "value": 10.0
+            },
+            {
+              "minute": "10:12",
+              "value": 5.0
+            }
+          ],
+          "threshold": {
+            "aggregation": "rate_per_minute",
+            "operator": "gte",
+            "value": 1
+          }
+        },
+        "errors": {
+          "error_rate_pct": 0.0,
+          "breakdown": {},
+          "retrieval_success_rate_pct": 100.0,
+          "threshold": {
+            "aggregation": "error_rate_pct",
+            "operator": "lte",
+            "value": 2
+          }
+        },
+        "cost": {
+          "total_usd": 0.028644,
+          "by_minute": [
+            {
+              "minute": "09:19",
+              "value": 0.019914
+            },
+            {
+              "minute": "10:12",
+              "value": 0.00873
+            }
+          ],
+          "threshold": {
+            "aggregation": "total",
+            "operator": "lte",
+            "value": 2.5
+          }
+        },
+        "tokens": {
+          "input_total": 513,
+          "output_total": 1807,
+          "threshold": {
+            "aggregation": "sum_by_field",
+            "operator": "lte",
+            "value": 50000
+          }
+        },
+        "quality": {
+          "average": 0.8667,
+          "threshold": {
+            "aggregation": "mean",
+            "operator": "gte",
+            "value": 0.75
+          }
+        }
+      },
+      "client_results": [
+        {
+          "status_code": 200,
+          "correlation_id": "req-97d0b3b1",
+          "client_latency_ms": 5593.3
+        },
+        {
+          "status_code": 200,
+          "correlation_id": "req-41f4ce3c",
+          "client_latency_ms": 5593.5
+        },
+        {
+          "status_code": 200,
+          "correlation_id": "req-6874e11b",
+          "client_latency_ms": 5595.6
+        },
+        {
+          "status_code": 200,
+          "correlation_id": "req-fe2caad5",
+          "client_latency_ms": 5595.4
+        },
+        {
+          "status_code": 200,
+          "correlation_id": "req-a5c8c6ee",
+          "client_latency_ms": 5594.5
+        }
+      ],
+      "response_logs": [
+        {
+          "service": "api",
+          "latency_ms": 2451,
+          "ttft_ms": 50,
+          "tokens_in": 35,
+          "tokens_out": 115,
+          "cost_usd": 0.00183,
+          "quality_score": 0.8,
+          "tool_name": "retrieval",
+          "tool_success": true,
+          "payload": {
+            "answer_preview": "Starter answer. You should improve this output logic and add better quality chec..."
+          },
+          "event": "response_sent",
+          "model": "claude-sonnet-4-5",
+          "user_id_hash": "dc9b2ec8da9d",
+          "feature": "monitoring",
+          "session_id": "k4-l3a-challenge-s03",
+          "env": "dev",
+          "correlation_id": "req-41f4ce3c",
+          "level": "info",
+          "ts": "2026-09-29T10:12:58.923357Z"
+        },
+        {
+          "service": "api",
+          "latency_ms": 155,
+          "ttft_ms": 50,
+          "tokens_in": 35,
+          "tokens_out": 81,
+          "cost_usd": 0.00132,
+          "quality_score": 0.8,
+          "tool_name": "retrieval",
+          "tool_success": true,
+          "payload": {
+            "answer_preview": "Starter answer. You should improve this output logic and add better quality chec..."
+          },
+          "event": "response_sent",
+          "model": "claude-sonnet-4-5",
+          "user_id_hash": "ed72e61117f6",
+          "feature": "monitoring",
+          "session_id": "k4-l3a-challenge-s05",
+          "env": "dev",
+          "correlation_id": "req-97d0b3b1",
+          "level": "info",
+          "ts": "2026-09-29T10:12:59.089894Z"
+        },
+        {
+          "service": "api",
+          "latency_ms": 159,
+          "ttft_ms": 50,
+          "tokens_in": 36,
+          "tokens_out": 100,
+          "cost_usd": 0.001608,
+          "quality_score": 0.9,
+          "tool_name": "retrieval",
+          "tool_success": true,
+          "payload": {
+            "answer_preview": "Starter answer. You should improve this output logic and add better quality chec..."
+          },
+          "event": "response_sent",
+          "model": "claude-sonnet-4-5",
+          "user_id_hash": "4570299f37e2",
+          "feature": "monitoring",
+          "session_id": "k4-l3a-challenge-s04",
+          "env": "dev",
+          "correlation_id": "req-6874e11b",
+          "level": "info",
+          "ts": "2026-09-29T10:12:59.264658Z"
+        },
+        {
+          "service": "api",
+          "latency_ms": 160,
+          "ttft_ms": 50,
+          "tokens_in": 35,
+          "tokens_out": 127,
+          "cost_usd": 0.00201,
+          "quality_score": 0.8,
+          "tool_name": "retrieval",
+          "tool_success": true,
+          "payload": {
+            "answer_preview": "Starter answer. You should improve this output logic and add better quality chec..."
+          },
+          "event": "response_sent",
+          "model": "claude-sonnet-4-5",
+          "user_id_hash": "dde2e75b20cf",
+          "feature": "monitoring",
+          "session_id": "k4-l3a-challenge-s01",
+          "env": "dev",
+          "correlation_id": "req-fe2caad5",
+          "level": "info",
+          "ts": "2026-09-29T10:12:59.429778Z"
+        },
+        {
+          "service": "api",
+          "latency_ms": 156,
+          "ttft_ms": 50,
+          "tokens_in": 34,
+          "tokens_out": 124,
+          "cost_usd": 0.001962,
+          "quality_score": 0.9,
+          "tool_name": "retrieval",
+          "tool_success": true,
+          "payload": {
+            "answer_preview": "Starter answer. You should improve this output logic and add better quality chec..."
+          },
+          "event": "response_sent",
+          "model": "claude-sonnet-4-5",
+          "user_id_hash": "aae0b94055a9",
+          "feature": "monitoring",
+          "session_id": "k4-l3a-challenge-s02",
+          "env": "dev",
+          "correlation_id": "req-a5c8c6ee",
+          "level": "info",
+          "ts": "2026-09-29T10:12:59.606273Z"
+        }
+      ]
+    },
+    {
+      "name": "incident",
+      "started_at": "2026-09-29T10:13:00.438677+00:00",
+      "ended_at": "2026-09-29T10:13:14.454244+00:00",
+      "command": "python scripts/load_test.py --challenge --concurrency 5",
+      "command_output": "Challenge: day13-k4-l3a-monitoring-llmops-v1 | Cohort: K4\n[200] req-3abfca78 | monitoring | 13370.5ms\n[200] req-29573e8f | monitoring | 13373.0ms\n[200] req-005abe19 | monitoring | 13384.1ms\n[200] req-f3520b18 | monitoring | 13383.9ms\n[200] req-f501314d | monitoring | 13386.7ms\n",
+      "metrics": {
+        "request_count": 5,
+        "success_count": 5,
+        "error_count": 0,
+        "error_rate_pct": 0.0,
+        "latency_ms": {
+          "p50": 2655.0,
+          "p95": 2658.0,
+          "p99": 2658.0,
+          "mean": 2656.0
+        },
+        "client_latency_ms": {
+          "p50": 13383.9,
+          "p95": 13386.7,
+          "p99": 13386.7
+        },
+        "ttft_p95_ms": 50.0,
+        "over_challenge_threshold": 5,
+        "retrieval_success_rate_pct": 100.0,
+        "correlation_ids": [
+          "req-3abfca78",
+          "req-29573e8f",
+          "req-005abe19",
+          "req-f3520b18",
+          "req-f501314d"
+        ]
+      },
+      "dashboard_60m": {
+        "title": "K4-L3A Day 13 Monitoring & LLMOps",
+        "generated_at": "2026-09-29T10:13:14.508587+00:00",
+        "time_range_minutes": 60,
+        "refresh_seconds": 30,
+        "record_count": 44,
+        "latency": {
+          "p50_ms": 160.0,
+          "p95_ms": 3987.0,
+          "p99_ms": 3987.0,
+          "ttft_p95_ms": 51.0,
+          "threshold": {
+            "aggregation": "p95",
+            "operator": "lte",
+            "value": 3000
+          }
+        },
+        "traffic": {
+          "request_count": 20,
+          "rate_per_minute": 6.67,
+          "by_minute": [
+            {
+              "minute": "09:19",
+              "value": 10.0
+            },
+            {
+              "minute": "10:12",
+              "value": 5.0
+            },
+            {
+              "minute": "10:13",
+              "value": 5.0
+            }
+          ],
+          "threshold": {
+            "aggregation": "rate_per_minute",
+            "operator": "gte",
+            "value": 1
+          }
+        },
+        "errors": {
+          "error_rate_pct": 0.0,
+          "breakdown": {},
+          "retrieval_success_rate_pct": 100.0,
+          "threshold": {
+            "aggregation": "error_rate_pct",
+            "operator": "lte",
+            "value": 2
+          }
+        },
+        "cost": {
+          "total_usd": 0.038304,
+          "by_minute": [
+            {
+              "minute": "09:19",
+              "value": 0.019914
+            },
+            {
+              "minute": "10:12",
+              "value": 0.00873
+            },
+            {
+              "minute": "10:13",
+              "value": 0.00966
+            }
+          ],
+          "threshold": {
+            "aggregation": "total",
+            "operator": "lte",
+            "value": 2.5
+          }
+        },
+        "tokens": {
+          "input_total": 688,
+          "output_total": 2416,
+          "threshold": {
+            "aggregation": "sum_by_field",
+            "operator": "lte",
+            "value": 50000
+          }
+        },
+        "quality": {
+          "average": 0.86,
+          "threshold": {
+            "aggregation": "mean",
+            "operator": "gte",
+            "value": 0.75
+          }
+        }
+      },
+      "client_results": [
+        {
+          "status_code": 200,
+          "correlation_id": "req-3abfca78",
+          "client_latency_ms": 13370.5
+        },
+        {
+          "status_code": 200,
+          "correlation_id": "req-29573e8f",
+          "client_latency_ms": 13373.0
+        },
+        {
+          "status_code": 200,
+          "correlation_id": "req-005abe19",
+          "client_latency_ms": 13384.1
+        },
+        {
+          "status_code": 200,
+          "correlation_id": "req-f3520b18",
+          "client_latency_ms": 13383.9
+        },
+        {
+          "status_code": 200,
+          "correlation_id": "req-f501314d",
+          "client_latency_ms": 13386.7
+        }
+      ],
+      "response_logs": [
+        {
+          "service": "api",
+          "latency_ms": 2655,
+          "ttft_ms": 50,
+          "tokens_in": 36,
+          "tokens_out": 107,
+          "cost_usd": 0.001713,
+          "quality_score": 0.9,
+          "tool_name": "retrieval",
+          "tool_success": true,
+          "payload": {
+            "answer_preview": "Starter answer. You should improve this output logic and add better quality chec..."
+          },
+          "event": "response_sent",
+          "model": "claude-sonnet-4-5",
+          "user_id_hash": "4570299f37e2",
+          "feature": "monitoring",
+          "session_id": "k4-l3a-challenge-s04",
+          "env": "dev",
+          "correlation_id": "req-f501314d",
+          "level": "info",
+          "ts": "2026-09-29T10:13:03.626710Z"
+        },
+        {
+          "service": "api",
+          "latency_ms": 2658,
+          "ttft_ms": 50,
+          "tokens_in": 35,
+          "tokens_out": 134,
+          "cost_usd": 0.002115,
+          "quality_score": 0.8,
+          "tool_name": "retrieval",
+          "tool_success": true,
+          "payload": {
+            "answer_preview": "Starter answer. You should improve this output logic and add better quality chec..."
+          },
+          "event": "response_sent",
+          "model": "claude-sonnet-4-5",
+          "user_id_hash": "dc9b2ec8da9d",
+          "feature": "monitoring",
+          "session_id": "k4-l3a-challenge-s03",
+          "env": "dev",
+          "correlation_id": "req-3abfca78",
+          "level": "info",
+          "ts": "2026-09-29T10:13:06.306746Z"
+        },
+        {
+          "service": "api",
+          "latency_ms": 2658,
+          "ttft_ms": 50,
+          "tokens_in": 35,
+          "tokens_out": 170,
+          "cost_usd": 0.002655,
+          "quality_score": 0.8,
+          "tool_name": "retrieval",
+          "tool_success": true,
+          "payload": {
+            "answer_preview": "Starter answer. You should improve this output logic and add better quality chec..."
+          },
+          "event": "response_sent",
+          "model": "claude-sonnet-4-5",
+          "user_id_hash": "ed72e61117f6",
+          "feature": "monitoring",
+          "session_id": "k4-l3a-challenge-s05",
+          "env": "dev",
+          "correlation_id": "req-f3520b18",
+          "level": "info",
+          "ts": "2026-09-29T10:13:08.978373Z"
+        },
+        {
+          "service": "api",
+          "latency_ms": 2654,
+          "ttft_ms": 50,
+          "tokens_in": 35,
+          "tokens_out": 116,
+          "cost_usd": 0.001845,
+          "quality_score": 0.8,
+          "tool_name": "retrieval",
+          "tool_success": true,
+          "payload": {
+            "answer_preview": "Starter answer. You should improve this output logic and add better quality chec..."
+          },
+          "event": "response_sent",
+          "model": "claude-sonnet-4-5",
+          "user_id_hash": "dde2e75b20cf",
+          "feature": "monitoring",
+          "session_id": "k4-l3a-challenge-s01",
+          "env": "dev",
+          "correlation_id": "req-005abe19",
+          "level": "info",
+          "ts": "2026-09-29T10:13:11.643859Z"
+        },
+        {
+          "service": "api",
+          "latency_ms": 2655,
+          "ttft_ms": 50,
+          "tokens_in": 34,
+          "tokens_out": 82,
+          "cost_usd": 0.001332,
+          "quality_score": 0.9,
+          "tool_name": "retrieval",
+          "tool_success": true,
+          "payload": {
+            "answer_preview": "Starter answer. You should improve this output logic and add better quality chec..."
+          },
+          "event": "response_sent",
+          "model": "claude-sonnet-4-5",
+          "user_id_hash": "aae0b94055a9",
+          "feature": "monitoring",
+          "session_id": "k4-l3a-challenge-s02",
+          "env": "dev",
+          "correlation_id": "req-29573e8f",
+          "level": "info",
+          "ts": "2026-09-29T10:13:14.310042Z"
+        }
+      ]
+    },
+    {
+      "name": "recovery",
+      "started_at": "2026-09-29T10:13:15.027952+00:00",
+      "ended_at": "2026-09-29T10:13:16.343266+00:00",
+      "command": "python scripts/load_test.py --challenge --concurrency 5",
+      "command_output": "Challenge: day13-k4-l3a-monitoring-llmops-v1 | Cohort: K4\n[200] req-7fbf4243 | monitoring | 487.6ms\n[200] req-4083ea30 | monitoring | 815.2ms\n[200] req-095f60c4 | monitoring | 818.1ms\n[200] req-b7f7e141 | monitoring | 817.0ms\n[200] req-963f4d83 | monitoring | 817.8ms\n",
+      "metrics": {
+        "request_count": 5,
+        "success_count": 5,
+        "error_count": 0,
+        "error_rate_pct": 0.0,
+        "latency_ms": {
+          "p50": 153.0,
+          "p95": 155.0,
+          "p99": 155.0,
+          "mean": 153.4
+        },
+        "client_latency_ms": {
+          "p50": 817.0,
+          "p95": 818.1,
+          "p99": 818.1
+        },
+        "ttft_p95_ms": 50.0,
+        "over_challenge_threshold": 0,
+        "retrieval_success_rate_pct": 100.0,
+        "correlation_ids": [
+          "req-7fbf4243",
+          "req-4083ea30",
+          "req-095f60c4",
+          "req-b7f7e141",
+          "req-963f4d83"
+        ]
+      },
+      "dashboard_60m": {
+        "title": "K4-L3A Day 13 Monitoring & LLMOps",
+        "generated_at": "2026-09-29T10:13:16.373626+00:00",
+        "time_range_minutes": 60,
+        "refresh_seconds": 30,
+        "record_count": 55,
+        "latency": {
+          "p50_ms": 156.0,
+          "p95_ms": 3860.0,
+          "p99_ms": 3987.0,
+          "ttft_p95_ms": 50.0,
+          "threshold": {
+            "aggregation": "p95",
+            "operator": "lte",
+            "value": 3000
+          }
+        },
+        "traffic": {
+          "request_count": 25,
+          "rate_per_minute": 8.33,
+          "by_minute": [
+            {
+              "minute": "09:19",
+              "value": 10.0
+            },
+            {
+              "minute": "10:12",
+              "value": 5.0
+            },
+            {
+              "minute": "10:13",
+              "value": 10.0
+            }
+          ],
+          "threshold": {
+            "aggregation": "rate_per_minute",
+            "operator": "gte",
+            "value": 1
+          }
+        },
+        "errors": {
+          "error_rate_pct": 0.0,
+          "breakdown": {},
+          "retrieval_success_rate_pct": 100.0,
+          "threshold": {
+            "aggregation": "error_rate_pct",
+            "operator": "lte",
+            "value": 2
+          }
+        },
+        "cost": {
+          "total_usd": 0.049299,
+          "by_minute": [
+            {
+              "minute": "09:19",
+              "value": 0.019914
+            },
+            {
+              "minute": "10:12",
+              "value": 0.00873
+            },
+            {
+              "minute": "10:13",
+              "value": 0.020655
+            }
+          ],
+          "threshold": {
+            "aggregation": "total",
+            "operator": "lte",
+            "value": 2.5
+          }
+        },
+        "tokens": {
+          "input_total": 863,
+          "output_total": 3114,
+          "threshold": {
+            "aggregation": "sum_by_field",
+            "operator": "lte",
+            "value": 50000
+          }
+        },
+        "quality": {
+          "average": 0.856,
+          "threshold": {
+            "aggregation": "mean",
+            "operator": "gte",
+            "value": 0.75
+          }
+        }
+      },
+      "client_results": [
+        {
+          "status_code": 200,
+          "correlation_id": "req-7fbf4243",
+          "client_latency_ms": 487.6
+        },
+        {
+          "status_code": 200,
+          "correlation_id": "req-4083ea30",
+          "client_latency_ms": 815.2
+        },
+        {
+          "status_code": 200,
+          "correlation_id": "req-095f60c4",
+          "client_latency_ms": 818.1
+        },
+        {
+          "status_code": 200,
+          "correlation_id": "req-b7f7e141",
+          "client_latency_ms": 817.0
+        },
+        {
+          "status_code": 200,
+          "correlation_id": "req-963f4d83",
+          "client_latency_ms": 817.8
+        }
+      ],
+      "response_logs": [
+        {
+          "service": "api",
+          "latency_ms": 152,
+          "ttft_ms": 50,
+          "tokens_in": 35,
+          "tokens_out": 117,
+          "cost_usd": 0.00186,
+          "quality_score": 0.8,
+          "tool_name": "retrieval",
+          "tool_success": true,
+          "payload": {
+            "answer_preview": "Starter answer. You should improve this output logic and add better quality chec..."
+          },
+          "event": "response_sent",
+          "model": "claude-sonnet-4-5",
+          "user_id_hash": "ed72e61117f6",
+          "feature": "monitoring",
+          "session_id": "k4-l3a-challenge-s05",
+          "env": "dev",
+          "correlation_id": "req-7fbf4243",
+          "level": "info",
+          "ts": "2026-09-29T10:13:15.658088Z"
+        },
+        {
+          "service": "api",
+          "latency_ms": 152,
+          "ttft_ms": 50,
+          "tokens_in": 36,
+          "tokens_out": 160,
+          "cost_usd": 0.002508,
+          "quality_score": 0.9,
+          "tool_name": "retrieval",
+          "tool_success": true,
+          "payload": {
+            "answer_preview": "Starter answer. You should improve this output logic and add better quality chec..."
+          },
+          "event": "response_sent",
+          "model": "claude-sonnet-4-5",
+          "user_id_hash": "4570299f37e2",
+          "feature": "monitoring",
+          "session_id": "k4-l3a-challenge-s04",
+          "env": "dev",
+          "correlation_id": "req-4083ea30",
+          "level": "info",
+          "ts": "2026-09-29T10:13:15.817223Z"
+        },
+        {
+          "service": "api",
+          "latency_ms": 153,
+          "ttft_ms": 50,
+          "tokens_in": 35,
+          "tokens_out": 128,
+          "cost_usd": 0.002025,
+          "quality_score": 0.8,
+          "tool_name": "retrieval",
+          "tool_success": true,
+          "payload": {
+            "answer_preview": "Starter answer. You should improve this output logic and add better quality chec..."
+          },
+          "event": "response_sent",
+          "model": "claude-sonnet-4-5",
+          "user_id_hash": "dde2e75b20cf",
+          "feature": "monitoring",
+          "session_id": "k4-l3a-challenge-s01",
+          "env": "dev",
+          "correlation_id": "req-095f60c4",
+          "level": "info",
+          "ts": "2026-09-29T10:13:15.981449Z"
+        },
+        {
+          "service": "api",
+          "latency_ms": 155,
+          "ttft_ms": 50,
+          "tokens_in": 34,
+          "tokens_out": 120,
+          "cost_usd": 0.001902,
+          "quality_score": 0.9,
+          "tool_name": "retrieval",
+          "tool_success": true,
+          "payload": {
+            "answer_preview": "Starter answer. You should improve this output logic and add better quality chec..."
+          },
+          "event": "response_sent",
+          "model": "claude-sonnet-4-5",
+          "user_id_hash": "aae0b94055a9",
+          "feature": "monitoring",
+          "session_id": "k4-l3a-challenge-s02",
+          "env": "dev",
+          "correlation_id": "req-b7f7e141",
+          "level": "info",
+          "ts": "2026-09-29T10:13:16.145241Z"
+        },
+        {
+          "service": "api",
+          "latency_ms": 155,
+          "ttft_ms": 50,
+          "tokens_in": 35,
+          "tokens_out": 173,
+          "cost_usd": 0.0027,
+          "quality_score": 0.8,
+          "tool_name": "retrieval",
+          "tool_success": true,
+          "payload": {
+            "answer_preview": "Starter answer. You should improve this output logic and add better quality chec..."
+          },
+          "event": "response_sent",
+          "model": "claude-sonnet-4-5",
+          "user_id_hash": "dc9b2ec8da9d",
+          "feature": "monitoring",
+          "session_id": "k4-l3a-challenge-s03",
+          "env": "dev",
+          "correlation_id": "req-963f4d83",
+          "level": "info",
+          "ts": "2026-09-29T10:13:16.309831Z"
+        }
+      ]
+    }
+  ],
+  "initial_health": {
+    "ok": true,
+    "tracing_enabled": true,
+    "incidents": {
+      "rag_slow": false,
+      "tool_fail": false,
+      "cost_spike": false
+    }
+  },
+  "enable_output": "200 {'ok': True, 'incidents': {'rag_slow': True, 'tool_fail': False, 'cost_spike': False}}\n",
+  "disable_output": "200 {'ok': True, 'incidents': {'rag_slow': False, 'tool_fail': False, 'cost_spike': False}}\n",
+  "final_health": {
+    "ok": true,
+    "tracing_enabled": true,
+    "incidents": {
+      "rag_slow": false,
+      "tool_fail": false,
+      "cost_spike": false
+    }
+  },
+  "challenge_file_unchanged": true
+}

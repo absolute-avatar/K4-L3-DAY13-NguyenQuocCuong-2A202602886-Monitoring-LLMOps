@@ -1,6 +1,6 @@
 # K4-L3A — Lab Day 13: Monitoring & LLMOps
 
-> - **Loại repository:** đề bài/starter dành riêng cho lớp K4-L3A
+> - **Loại repository:** bài nộp cá nhân dựa trên starter của lớp K4-L3A
 > - **Hình thức làm bài:** cá nhân
 > - **Thời gian trên lớp:** 14:00–18:00 (240 phút)
 > - **Deadline mặc định:** 23:59:59 trong ngày học, múi giờ Asia/Ho_Chi_Minh
@@ -12,6 +12,28 @@ Bạn sẽ biến một AI API “hộp đen” thành hệ thống có thể tr
 3. Trace của request đó cho biết span nào chậm hoặc lỗi.
 
 Repo dùng fake LLM nên không cần API key mô hình trả phí. Mỗi học viên tự tạo một project Langfuse riêng để quan sát trace và quản lý prompt version; không dùng project/key dùng chung.
+
+## Trạng thái bài làm cá nhân
+
+<!-- TODO (documentation - completed): Đồng bộ báo cáo, evidence index và
+hướng dẫn chạy lại. Không đánh dấu submission hoàn thành khi UI/Git còn pending. -->
+
+Nguyễn Quốc Cường — MSSV **2A202602886**, project Langfuse
+`day13-k4-l3a-2A202602886`. CP1 đã hoàn thiện logging/PII; CP2 có child
+observations, managed prompt v1/v2, dashboard runtime, SLO và alert/runbook;
+CP3 đã đo baseline/incident/recovery trên challenge gốc và nối metric → log
+→ trace. Kiểm tra mới nhất: **41 tests passed, log 100/100, dashboard 6/6**.
+
+- [Báo cáo và trạng thái nộp](submission/REPORT.md).
+- [Evidence index](submission/evidence/README.md) và
+  [output kiểm tra worktree mới nhất](submission/evidence/pre-submission-validation.txt).
+- [Dashboard runtime và giới hạn số đo](docs/DASHBOARD_SETUP.md).
+- [Prompt versioning và rollback](docs/PROMPT_VERSIONING.md).
+- [Checklist evidence, hướng dẫn hoàn thiện ảnh incident](docs/grading-evidence.md).
+
+Còn phải che public key trong ảnh 08a/08b, hoàn thiện tên span/correlation ID
+trong ảnh 14, chốt commit/push và nộp URL/SHA. Hướng dẫn checkpoint bên dưới
+giữ lại để tái hiện, không có nghĩa source vẫn là starter chưa hoàn thiện.
 
 ## Kết quả cần đạt
 
@@ -43,6 +65,10 @@ python -m pip install --upgrade pip
 pip install -r requirements.txt
 Copy-Item .env.example .env
 ```
+
+Chỉ copy `.env.example` khi chưa có `.env`; không ghi đè file đang chứa cấu
+hình cá nhân. Với workspace đã có venv, có thể chạy API bằng
+`.\.venv\Scripts\python.exe -m uvicorn app.main:app --reload --env-file .env`.
 
 macOS/Linux:
 
@@ -83,7 +109,13 @@ python scripts/validate_dashboard.py
 python -m pytest -q
 ```
 
-Baseline log chưa đạt là bình thường vì các `TODO` của CP1 chưa được làm. Ghi lại kết quả baseline vào `submission/REPORT.md` trước khi sửa.
+Với starter chưa sửa, baseline có thể chưa đạt vì các TODO CP1 còn trống.
+Trong bản cá nhân hiện tại CP1 đã hoàn thiện; output cũ vẫn được giữ riêng
+để đối chiếu, không ghi đè hoặc gán thành kết quả trên commit nộp mới.
+
+Dashboard runtime: mở `http://127.0.0.1:8000/dashboard`; snapshot JSON tại
+`http://127.0.0.1:8000/dashboard/data`. Time range 60 phút và refresh 30 giây.
+Traces và prompt versions xem trên Langfuse, không gọi trace UI là log JSONL.
 
 ## Lộ trình 14:00–18:00 (240 phút)
 
@@ -157,7 +189,8 @@ git log -1 --oneline
 
 ## Tên repo bài nộp
 
-Repo này là **repo đề bài**, nên tên chính thức là `K4-L3A-Day13-Monitoring-LLMOps` (mẫu `K4-L3A-TenBai`). Repo bài nộp cá nhân dùng mẫu:
+Starter gốc là `K4-L3A-Day13-Monitoring-LLMOps`; repository hiện tại là bài
+nộp cá nhân, dùng mẫu:
 
 ```text
 K4-L3-DAY13-HoVaTen-MSSV-Monitoring-LLMOps

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="590" viewBox="0 0 1120 590">
+<rect width="1120" height="590" fill="#f7f9fc"/>
+<g font-family="Segoe UI,Arial,sans-serif" fill="#203146">
+<text x="35" y="42" font-size="24" font-weight="700">CP3: measured request latency before / during / after incident</text>
+<text x="35" y="70" font-size="16">day13-k4-l3a-monitoring-llmops-v1 | feature: monitoring | concurrency: 5</text>
+<text x="35" y="99" font-size="14">Source: real response_sent logs; 5 requests per phase; unit: milliseconds (ms)</text>
+<line x1="90" y1="420.0" x2="1050" y2="420.0" stroke="#d8dfe8"/>
+<text x="28" y="425.0" font-size="13">0</text>
+<line x1="90" y1="342.9" x2="1050" y2="342.9" stroke="#d8dfe8"/>
+<text x="28" y="347.9" font-size="13">1000</text>
+<line x1="90" y1="265.7" x2="1050" y2="265.7" stroke="#d8dfe8"/>
+<text x="28" y="270.7" font-size="13">2000</text>
+<line x1="90" y1="188.6" x2="1050" y2="188.6" stroke="#d8dfe8"/>
+<text x="28" y="193.6" font-size="13">3000</text>
+<line x1="90" y1="265.7" x2="1050" y2="265.7" stroke="#b57515" stroke-width="2" stroke-dasharray="7 5"/>
+<text x="730" y="256.7" font-size="14" fill="#925c0d">Challenge threshold: 2000 ms</text>
+<text x="780" y="179.6" font-size="13">SLO boundary: 3000 ms</text>
+<rect x="164" y="408.1" width="132" height="11.9" fill="#17786f" rx="4"/>
+<text x="230" y="396.1" text-anchor="middle" font-size="22" font-weight="700">P95 154 ms</text>
+<text x="230" y="454" text-anchor="middle" font-size="20">Baseline</text>
+<text x="230" y="481" text-anchor="middle" font-size="14">17:15:12–17:15:14 UTC+07</text>
+<text x="230" y="506" text-anchor="middle" font-size="14">Above threshold: 0/5</text>
+<rect x="499" y="215.3" width="132" height="204.7" fill="#d14949" rx="4"/>
+<text x="565" y="203.3" text-anchor="middle" font-size="22" font-weight="700">P95 2654 ms</text>
+<text x="565" y="454" text-anchor="middle" font-size="20">Incident</text>
+<text x="565" y="481" text-anchor="middle" font-size="14">17:15:14–17:15:28 UTC+07</text>
+<text x="565" y="506" text-anchor="middle" font-size="14">Above threshold: 5/5</text>
+<rect x="834" y="408.1" width="132" height="11.9" fill="#17786f" rx="4"/>
+<text x="900" y="396.1" text-anchor="middle" font-size="22" font-weight="700">P95 154 ms</text>
+<text x="900" y="454" text-anchor="middle" font-size="20">Recovery</text>
+<text x="900" y="481" text-anchor="middle" font-size="14">17:15:29–17:15:30 UTC+07</text>
+<text x="900" y="506" text-anchor="middle" font-size="14">Above threshold: 0/5</text>
+<text x="35" y="547" font-size="13">P95 uses nearest-rank; with only 5 samples it equals the maximum. Small experiment, not a 28-day SLO measurement.</text>
+<text x="35" y="570" font-size="13">Warmup requests excluded. This is an analytical chart from measured data, not a screenshot of a dashboard or Langfuse.</text>
+</g></svg>

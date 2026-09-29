@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="vi"><meta charset="utf-8"><title>CP3 incident evidence</title>
+<style>body{max-width:1160px;margin:28px auto;font:16px/1.55 Segoe UI,Arial,sans-serif;background:#f7f9fc;color:#203146;padding:0 16px}img{width:100%;height:auto}table{border-collapse:collapse;width:100%;font-size:14px}td,th{padding:12px;border:1px solid #ccd6e2;text-align:left}pre{background:white;padding:18px;border:1px solid #ccd6e2;white-space:pre-wrap;overflow-wrap:anywhere}a{color:#125b99}code{font-size:14px}h1{font-size:28px}</style>
+<h1>CP3 — metric → log → trace</h1>
+<p>Ảnh chụp trang này là evidence phân tích số liệu đã lưu. Các số đo đều lấy từ lần chạy thật; các query riêng của challenge không được đưa vào artifact.</p>
+<img src="12-incident-metric.svg" alt="Measured P95 for baseline, incident and recovery">
+<table><tr><th>Phase</th><th>UTC+07 window</th><th>P50 xử lý (ms)</th><th>P95 xử lý (ms)</th><th>P95 client (ms)</th><th>TTFT P95 (ms)</th><th>Error</th></tr><tr><td>Baseline</td><td>2026-09-29T17:15:12+07:00 – 17:15:14</td><td>153.0</td><td>154.0</td><td>822.1</td><td>50.0</td><td>0.0%</td></tr><tr><td>Incident</td><td>2026-09-29T17:15:14+07:00 – 17:15:28</td><td>2654.0</td><td>2654.0</td><td>13325.0</td><td>50.0</td><td>0.0%</td></tr><tr><td>Recovery</td><td>2026-09-29T17:15:29+07:00 – 17:15:30</td><td>153.0</td><td>154.0</td><td>822.6</td><td>50.0</td><td>0.0%</td></tr></table>
+<h2>Log thật của request đại diện</h2><pre>{
+  &quot;service&quot;: &quot;api&quot;,
+  &quot;latency_ms&quot;: 2653,
+  &quot;ttft_ms&quot;: 50,
+  &quot;tokens_in&quot;: 35,
+  &quot;tokens_out&quot;: 175,
+  &quot;cost_usd&quot;: 0.00273,
+  &quot;quality_score&quot;: 0.8,
+  &quot;tool_name&quot;: &quot;retrieval&quot;,
+  &quot;tool_success&quot;: true,
+  &quot;payload&quot;: {
+    &quot;answer_preview&quot;: &quot;Starter answer. You should improve this output logic and add better quality chec...&quot;
+  },
+  &quot;event&quot;: &quot;response_sent&quot;,
+  &quot;correlation_id&quot;: &quot;req-67ed9c57&quot;,
+  &quot;session_id&quot;: &quot;k4-l3a-challenge-s01&quot;,
+  &quot;user_id_hash&quot;: &quot;dde2e75b20cf&quot;,
+  &quot;env&quot;: &quot;dev&quot;,
+  &quot;feature&quot;: &quot;monitoring&quot;,
+  &quot;model&quot;: &quot;claude-sonnet-4-5&quot;,
+  &quot;level&quot;: &quot;info&quot;,
+  &quot;ts&quot;: &quot;2026-09-29T10:15:25.797315Z&quot;
+}</pre>
+<h2>Trace đã xác minh qua Langfuse API</h2>
+<p>Correlation ID: <code>req-67ed9c57</code><br>Trace ID: <code>4141305c45dfe206c515364337a29a58</code><br>Root: 2659.0 ms · Retrieval: 2501.0 ms · Generation: 152.0 ms</p>
+<p><a href="https://cloud.langfuse.com/project/cmumcz16o205xad0d3qepok9w/traces/4141305c45dfe206c515364337a29a58" target="_blank" rel="noopener">Mở trace thật trong Langfuse để chụp waterfall (14-incident-trace.png)</a></p>
+<p>Raw input/output không capture; user ID đã hash. Các observation cùng parent root. Việc tắt incident đã được kiểm chứng bằng một lượt recovery với cùng input/concurrency.</p>
+<p>Dashboard 60 phút chứa cả traffic practice cũ. Bảng trên lọc theo correlation ID từng lượt chạy để tránh gán metric của request khác cho challenge.</p>
+</html>

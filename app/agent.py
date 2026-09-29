@@ -3,6 +3,7 @@ from __future__ import annotations
 import os
 import time
 from dataclasses import dataclass
+from datetime import datetime, timedelta, timezone
 
 from . import metrics
 from .mock_llm import FakeLLM
@@ -51,7 +52,41 @@ class LabAgent:
             },
         ):
             started = time.perf_counter()
-            docs = retrieve(message)
+
+            # TODO (CP2 - completed): Instrument retrieve() as a child
+            # observation without capturing the raw query or retrieved documents.
+            with langfuse_client.start_as_current_observation(
+                name="retrieval",
+                as_type="retriever",
+                metadata={
+                    "query_preview": summarize_text(message),
+                    "feature": feature,
+                },
+            ):
+                try:
+                    docs = retrieve(message)
+                    langfuse_client.update_current_span(
+                        metadata={
+                            "query_preview": summarize_text(message),
+                            "feature": feature,
+                            "doc_count": len(docs),
+                            "success": True,
+                        }
+                    )
+                except Exception as exc:
+                    langfuse_client.update_current_span(
+                        level="ERROR",
+                        status_message=type(exc).__name__,
+                        metadata={
+                            "query_preview": summarize_text(message),
+                            "feature": feature,
+                            "doc_count": 0,
+                            "success": False,
+                            "error_type": type(exc).__name__,
+                        },
+                    )
+                    raise
+
             prompt = resolve_prompt(
                 langfuse_client,
                 feature=feature,
@@ -71,13 +106,69 @@ class LabAgent:
                 },
                 version=prompt.version,
             )
-            # TODO (CP2): instrument retrieve() and FakeLLM.generate() as child
-            # observations. The nested generation must receive prompt, usage and cost.
+
+            # TODO (CP2 - completed): Instrument FakeLLM.generate() as a child
+            # generation. Link the managed prompt and record usage/cost, while
+            # deliberately omitting raw compiled input and raw model output.
             with propagate_attributes(prompt=prompt.managed_prompt):
-                response = self.llm.generate(prompt.text)
+                generation_started_at = datetime.now(timezone.utc)
+                with langfuse_client.start_as_current_observation(
+                    name="fake-llm-generation",
+                    as_type="generation",
+                    model=self.model,
+                    metadata={
+                        "prompt_name": prompt.name,
+                        "prompt_label": prompt.label,
+                        "prompt_version": prompt.version,
+                        "prompt_source": prompt.source,
+                    },
+                ):
+                    try:
+                        response = self.llm.generate(prompt.text)
+                        cost_details = self._estimate_cost_details(
+                            response.usage.input_tokens,
+                            response.usage.output_tokens,
+                        )
+                        cost_usd = cost_details["total"]
+                        langfuse_client.update_current_generation(
+                            model=response.model,
+                            usage_details={
+                                "input": response.usage.input_tokens,
+                                "output": response.usage.output_tokens,
+                                "total": (
+                                    response.usage.input_tokens
+                                    + response.usage.output_tokens
+                                ),
+                            },
+                            cost_details=cost_details,
+                            completion_start_time=(
+                                generation_started_at
+                                + timedelta(milliseconds=response.ttft_ms)
+                            ),
+                            metadata={
+                                "ttft_ms": response.ttft_ms,
+                                "prompt_name": prompt.name,
+                                "prompt_label": prompt.label,
+                                "prompt_version": prompt.version,
+                                "prompt_source": prompt.source,
+                            },
+                        )
+                    except Exception as exc:
+                        langfuse_client.update_current_generation(
+                            level="ERROR",
+                            status_message=type(exc).__name__,
+                            metadata={
+                                "error_type": type(exc).__name__,
+                                "prompt_name": prompt.name,
+                                "prompt_label": prompt.label,
+                                "prompt_version": prompt.version,
+                                "prompt_source": prompt.source,
+                            },
+                        )
+                        raise
+
             quality_score = self._heuristic_quality(message, response.text, docs)
             latency_ms = int((time.perf_counter() - started) * 1000)
-            cost_usd = self._estimate_cost(response.usage.input_tokens, response.usage.output_tokens)
 
         metrics.record_request(
             latency_ms=latency_ms,
@@ -99,9 +190,18 @@ class LabAgent:
         )
 
     def _estimate_cost(self, tokens_in: int, tokens_out: int) -> float:
+        return self._estimate_cost_details(tokens_in, tokens_out)["total"]
+
+    def _estimate_cost_details(
+        self, tokens_in: int, tokens_out: int
+    ) -> dict[str, float]:
         input_cost = (tokens_in / 1_000_000) * 3
         output_cost = (tokens_out / 1_000_000) * 15
-        return round(input_cost + output_cost, 6)
+        return {
+            "input": round(input_cost, 9),
+            "output": round(output_cost, 9),
+            "total": round(input_cost + output_cost, 6),
+        }
 
     def _heuristic_quality(self, question: str, answer: str, docs: list[str]) -> float:
         score = 0.5
